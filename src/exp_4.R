@@ -95,7 +95,7 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
   
   # Calculate mean AUC values for different groups of experimental results
   data_for_plot <- exp_results %>%
-    group_by(dataset_name, prop_NAs, IMPUTED, maxdepth) %>%
+    group_by(dataset_name, PROP_SWITCH_Y, maxdepth) %>%
     summarize(mean_auc=mean(auc), .groups='drop')
   
   # Create a ggplot object for the line plot
@@ -104,7 +104,7 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
     theme_bw() +
     xlab("Maximum tree depth") +
     ylab("AUC (estimated through repeated validation)") +
-    facet_grid(dataset_name ~ prop_NAs, scales="free_y") +
+    facet_grid(dataset_name ~ PROP_SWITCH_Y, scales="free_y") +
     theme(legend.position="bottom",
           panel.grid.major=element_blank(),
           strip.background=element_blank(),
@@ -127,5 +127,5 @@ if (RERUN_EXP ==  TRUE) {
 }
 
 # Plot the experiment results
-# plot_exp_results( "./outputs/tables/exp_4.txt", "./outputs/plots/exp_4.jpg", width=5, height=4)
+plot_exp_results( "./outputs/tables/exp_4.txt", "./outputs/plots/exp_4.jpg", width=5, height=4)
 

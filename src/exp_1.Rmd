@@ -23,7 +23,7 @@ source("exp_1.R")
 
 Se observa que a medida que aumenta la proporción de NAs la performance de los modelos disminuye. Por otro lado, en los datasets de Churn y Sleep Dissorder la performance sin imputar los datos faltantes es mejor que al imputar con la media. En el dataset de Heart Disease, la performance es similar.
 
-En la mayoría de los casos, mayor profundidad en los árboles no parece mejorar la preformance. Esto ocurre porque los modelos son demasiado flexibles para la cantidad de datos o complejidad de las relaciones entre ellos, por lo que se ajustan por demás a los datos de entrenamiento (y su ruido) y luego su perormance no es muy buena con datos nuevos. Sin embargo, cuando la proporción de datos faltantes es muy alta, no se observa el fenómeno de overfitting. No tenemos ninguna hipótesis fuerte de por qué sucede.
+En la mayoría de los casos, mayor profundidad en los árboles no parece mejorar la preformance. Esto ocurre porque los modelos son demasiado flexibles para la cantidad de datos o complejidad de las relaciones entre ellos, por lo que se ajustan por demás a los datos de entrenamiento (y su ruido) y luego su perormance no es muy buena con datos nuevos. Sin embargo, cuando la proporción de datos faltantes es muy alta, no se observa el fenómeno de overfitting. Suponemos que puede ocurrir debido a que no hay suficientes datos reales con los cuales se hace overfitting.
 
 ```{r}
 raw_data = read.table("./outputs/tables/exp_1.txt", header = TRUE)
