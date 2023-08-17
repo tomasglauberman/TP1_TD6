@@ -58,20 +58,20 @@ datasets_to_pred <- list(
 
 ```{r}
 sub_sample <- function(data, clase){
-  print(data)
   
   #te da el tamaño de la clase con menor cantidad de observaciones (n)
-  tamaño_muestra <- min(table(data$clase))  
+  tamaño_muestra <- min(table(data[,clase]))
+  
   
   # Submuestreo de la clase mayoritaria (agarro n observaciones)
   submuestra_mayoritaria <- data %>%
-    group_by(clase) %>%
+    group_by_at(clase) %>%
     sample_n(tamaño_muestra)
 }
 
 
 for(i in datasets_to_pred){
-  subsample(i$data_df, i$var_to_predict)
+  print(sub_sample(i$data_df, i$var_to_predict))
 }
 
 ```
