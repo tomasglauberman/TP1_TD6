@@ -1,0 +1,78 @@
+---
+title: "exp_propio"
+author: "Massri"
+date: "2023-08-17"
+output: html_document
+---
+```{r}
+library(dplyr)
+source("provided_functions.R")
+```
+
+
+```{r}
+data_sleep = read.table("./data/sleep_health_proc.csv", header=TRUE, sep=",")
+data_churn = read.table("./data/customer_churn.csv", header=TRUE, sep=",")
+data_heart = read.table("./data/heart.csv", header=TRUE, sep=",")
+
+sleep <- data_sleep %>%
+    group_by(Sleep.Disorder) %>%
+    summarize(count=n())
+
+sleep
+
+churn <- data_churn %>%
+    group_by(churn) %>%
+    summarize(count=n())
+
+churn
+
+heart <- data_heart %>%
+    group_by(HeartDisease) %>%
+    summarize(count=n())
+
+heart
+
+
+```
+```{r}
+  tamaño_muestra <- min(table(data_heart$HeartDisease))
+tamaño_muestra
+```
+
+```{r}
+ submuestra_mayoritaria <- data_heart %>%
+    group_by(HeartDisease) %>%
+    sample_n(tamaño_muestra)
+
+
+```
+
+```{r}
+datasets_to_pred <- list(
+  load_df("./data/sleep_health_proc.csv", "Sleep", "Sleep.Disorder"),
+  load_df("./data/customer_churn.csv", "Churn", "churn"), # Source: https://archive.ics.uci.edu/dataset/563/iranian+churn+dataset
+  load_df("./data/heart.csv", "Heart", "HeartDisease")    # Source: https://www.kaggle.com/datasets/arnabchaki/data-science-salaries-2023
+)
+```
+
+```{r}
+sub_sample <- function(data, clase){
+  print(data)
+  
+  #te da el tamaño de la clase con menor cantidad de observaciones (n)
+  tamaño_muestra <- min(table(data$clase))  
+  
+  # Submuestreo de la clase mayoritaria (agarro n observaciones)
+  submuestra_mayoritaria <- data %>%
+    group_by(clase) %>%
+    sample_n(tamaño_muestra)
+}
+
+
+for(i in datasets_to_pred){
+  subsample(i$data_df, i$var_to_predict)
+}
+
+```
+
