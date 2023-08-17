@@ -30,23 +30,12 @@ run_experiment <- function(datasets_to_pred, filepath) {
   
   # Iterate through different dataset, imputation, and proportion of missing values combinations
   for (dtp in datasets_to_pred) {
-    for (impute in c("Yes", "No")) {
+    for (impute in c("No")) {
       for (PROP_SWITCH_Y in seq(0, 0.5, 0.025)) {
         print(c(dtp$dataset_name, impute, PROP_SWITCH_Y))
         
         # Configure preprocessing options based on imputation choice
-        if (impute == "Yes") {
-          preprocess_control <- list(
-            prop_NAs= 0,
-            impute_NAs=TRUE,
-            treat_NAs_as_new_levels=FALSE,
-            do_ohe=FALSE,
-            discretize=FALSE,
-            n_bins=N_BINS,
-            ord_to_numeric=FALSE,
-            prop_switch_y= PROP_SWITCH_Y
-          )
-        } else if (impute == "No") {
+        if (impute == "No") {
           preprocess_control <- list(
             prop_NAs=0,
             impute_NAs=FALSE,
