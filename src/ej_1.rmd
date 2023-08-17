@@ -43,8 +43,8 @@ sleep_data
 ```
 
 ```{r}
-sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder != "None"] <- 1
-sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder == "None"] <- 0
+sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder != "None"] <- "Yes"
+sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder == "None"] <- "No"
 
 sleep_data
 ```
@@ -73,5 +73,5 @@ write.table(sleep_data, "data/sleep_health_proc.csv", sep = ",", col.names = TRU
 
 ```{r}
 sleep_data <- read.csv("./data/sleep_health_proc.csv", sep = ",")
-sleep_data$Occupation = as.factor(sleep_data$Occupation)
+sleep_data
 ```

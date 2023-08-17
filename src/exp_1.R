@@ -6,7 +6,7 @@ library(dplyr)    # For data manipulation
 PARALLELIZE <- TRUE # Set the option for parallelization of computations
 N_THREADS <- 30     # Define the number of threads for parallel processing
 N_BINS <- 10        # Define the number of bins for discretization
-RERUN_EXP <- TRUE   # Set the option to rerun the experiment
+RERUN_EXP <- FALSE   # Set the option to rerun the experiment
 
 # Load provided functions
 set.seed(589115021)
@@ -120,9 +120,8 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
           panel.grid.major=element_blank(),
           strip.background=element_blank(),
           panel.border=element_rect(colour="black", fill=NA))
-  
-  # Save the plot to a file
-  ggsave(filename_plot, g, width=width, height=height)
+
+  print(g)
 }
 
 # Load the datasets
@@ -134,9 +133,9 @@ datasets_to_pred <- list(
 
 # Run the experiment
 if (RERUN_EXP ==  TRUE) {
-  run_experiment(datasets_to_pred, "./outputs/tables/exp1.txt")
+  run_experiment(datasets_to_pred, "./outputs/tables/exp_1.txt")
 }
 
 # Plot the experiment results
-plot_exp_results( "./outputs/tables/exp1.txt", "./outputs/plots/exp1.jpg", width=5, height=4)
+plot_exp_results( "./outputs/tables/exp_1.txt", "./outputs/plots/exp_1.jpg", width=5, height=4)
 
