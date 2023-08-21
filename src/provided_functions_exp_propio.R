@@ -383,3 +383,15 @@ est_auc_across_depths_no_par <- function(data_to_pred, preprocess_control, max_m
 
   return(auc_across_depths)
 }
+
+
+sub_sample <- function(data, clase) {
+  #te da el tamaño de la clase con menor cantidad de observaciones (n)
+  tamaño_muestra <- min(table(data[,clase]))
+  
+  
+  # Submuestreo de la clase mayoritaria (agarro n observaciones)
+  submuestra_mayoritaria <- data %>%
+    group_by_at(clase) %>%
+    sample_n(tamaño_muestra)
+}
