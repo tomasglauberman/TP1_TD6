@@ -1,11 +1,11 @@
 ---
-title: "exp_4.Rmd"
+title: "Experimento 4"
 author: "Massri"
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
 
-Se realizó un experimento en el que se analiza el impacto que tiene el riudo en la variable a predecir en un dataset para un modelo de Árbol de decisión. Para ello, se entrenaron múltiples modelos para cada uno de los datasets, lo que nos permite estimar y evaluar la performance de cada uno.
+Se realizó un experimento en el que se analiza el impacto que tiene el riudo en la variable a predecir con un modelo de Árbol de decisión. Para ello, se entrenaron múltiples modelos para cada uno de los datasets, lo que permite estimar y evaluar la performance de cada uno.
 
 Las variables independientes del experimento son:
 
