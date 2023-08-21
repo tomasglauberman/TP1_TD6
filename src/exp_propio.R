@@ -7,7 +7,7 @@ library(gridExtra)
 PARALLELIZE <- TRUE # Set the option for parallelization of computations
 N_THREADS <- 30     # Define the number of threads for parallel processing
 N_BINS <- 10        # Define the number of bins for discretization
-RERUN_EXP <- FALSE   # Set the option to rerun the experiment
+RERUN_EXP <- TRUE   # Set the option to rerun the experiment
 
 # Load provided functions
 set.seed(589115021)
@@ -33,6 +33,7 @@ run_experiment <- function(datasets_to_pred, filepath) {
   # Iterate through different dataset, imputation, and proportion of missing values combinations
   for (dtp in datasets_to_pred) {
     for (subsamplear in c("Yes", "No")) {
+      for (propNA in c(0, 0.7)) {
         print(c(dtp$dataset_name, subsamplear))
         
         # Configure preprocessing options based on imputation choice
@@ -41,7 +42,7 @@ run_experiment <- function(datasets_to_pred, filepath) {
           dtp$data_df = data_nueva
           
           preprocess_control <- list(
-            prop_NAs= 0,
+            prop_NAs= propNA,
             impute_NAs=FALSE,
             treat_NAs_as_new_levels=FALSE,
             do_ohe=FALSE,
@@ -52,7 +53,7 @@ run_experiment <- function(datasets_to_pred, filepath) {
           )
         } else if (subsamplear == "No") {
           preprocess_control <- list(
-            prop_NAs= 0,
+            prop_NAs= propNA,
             impute_NAs=FALSE,
             treat_NAs_as_new_levels=FALSE,
             do_ohe=FALSE,
@@ -75,9 +76,11 @@ run_experiment <- function(datasets_to_pred, filepath) {
         }
         
         res_tmp$SUBSAMPLED <- subsamplear
+        res_tmp$propNA <- propNA
         exp_results[[i]] <- res_tmp
         rm(res_tmp)  # Clean up temporary result
         i <- i + 1  # Increment result counter
+      }
     }
   }
   
@@ -106,57 +109,27 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
   # Load experiment results
   exp_results <- read.table(filename_exp_results, header=TRUE, sep="\t")
   
+  exp_results$SUBSAMPLED = as.factor(exp_results$SUBSAMPLED)
+  
   # Calculate mean AUC values for different groups of experimental results
   data_for_plot <- exp_results %>%
-    group_by(dataset_name, SUBSAMPLED, maxdepth) %>%
+    group_by(dataset_name, SUBSAMPLED, maxdepth, propNA) %>%
     summarize(mean_auc=mean(auc), .groups='drop')
   
-  data_churn <- data_for_plot %>%
-    filter(dataset_name == "Churn")
-  data_sleep <- data_for_plot %>%
-    filter(dataset_name == "Sleep")
-  data_heart <- data_for_plot %>%
-    filter(dataset_name == "Heart")
-  
-  # Create a ggplot object for the line plot
-  plot1 <- ggplot(data_churn, aes(x=maxdepth, y=mean_auc, color=SUBSAMPLED)) +
+  g <- ggplot(data_for_plot, aes(x=maxdepth, y=mean_auc, color=SUBSAMPLED)) +
     geom_line() +
     theme_bw() +
     xlab("Maximum tree depth") +
+    ylim(c(0.5, 1)) + 
     ylab("AUC (estimated through repeated validation)") +
-    ggtitle("Churn") +
+    facet_grid(dataset_name ~ propNA, scales="free_y") +
     theme(legend.position="bottom",
           panel.grid.major=element_blank(),
           strip.background=element_blank(),
-          panel.border=element_rect(colour="black", fill=NA),
-          plot.title = element_text(hjust = 0.5))
+          panel.border=element_rect(colour="black", fill=NA))
   
-  plot2 <- ggplot(data_sleep, aes(x=maxdepth, y=mean_auc, color=SUBSAMPLED)) +
-    geom_line() +
-    theme_bw() +
-    xlab("Maximum tree depth") +
-    ylab("AUC (estimated through repeated validation)") +
-    ggtitle("Sleep") +
-    theme(legend.position="bottom",
-          panel.grid.major=element_blank(),
-          strip.background=element_blank(),
-          panel.border=element_rect(colour="black", fill=NA),
-          plot.title = element_text(hjust = 0.5))
-  
-  plot3 <- ggplot(data_heart, aes(x=maxdepth, y=mean_auc, color=SUBSAMPLED)) +
-    geom_line() +
-    theme_bw() +
-    xlab("Maximum tree depth") +
-    ylab("AUC (estimated through repeated validation)") +
-    ggtitle("Heart") +
-    theme(legend.position="bottom",
-          panel.grid.major=element_blank(),
-          strip.background=element_blank(),
-          panel.border=element_rect(colour="black", fill=NA),
-          plot.title = element_text(hjust = 0.5))
-  
-  grid.arrange(plot1, plot2, plot3, ncol = 3)
-
+  print(g)
+  return(g)
 }
 
 # Load the datasets
@@ -172,5 +145,5 @@ if (RERUN_EXP ==  TRUE) {
 }
 
 # Plot the experiment results
-plot_exp_results( "./outputs/tables/exp_propio.txt", "./outputs/plots/exp_1.jpg", width=5, height=4)
+plot_exp_results( "./outputs/tables/exp_propio.txt", "./outputs/plots/exp_propio.jpg", width=6, height=4)
 
