@@ -44,6 +44,8 @@ par(mfrow = c(1, 1))
 En la mayoría de los casos, mayor profundidad en los árboles no parece mejorar la preformance. Esto ocurre porque los modelos son demasiado flexibles para la cantidad de datos o complejidad de las relaciones entre ellos, por lo que se ajustan por demás a los datos de entrenamiento (y su ruido) y luego su performance no es muy buena con datos nuevos. Sin embargo, cuando la proporción de datos faltantes es muy alta, no se observa el fenómeno de que a mayor profundidad, mejor performance. Suponemos que puede ocurrir debido a que no hay suficientes datos reales con los cuales se hace overfitting.
 
 ```{r}
+raw_data = read.table("./outputs/tables/exp_1.txt", header = TRUE)
+
 # Calculate mean AUC values for different groups of experimental results
 data_for_plot <- raw_data %>%
   group_by(dataset_name, prop_NAs, IMPUTED, maxdepth) %>%
