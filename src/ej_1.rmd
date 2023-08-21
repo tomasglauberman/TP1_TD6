@@ -39,18 +39,16 @@ Se debe transformar la columna de Blood pressure que viene dada en el formato 12
 
 ```{r}
 sleep_data <- read.csv("data/sleep_health.csv")
-sleep_data
 ```
+
+Transformamos también la variable a predecir, dado que el original viene con los valores None o el nombre del disorder.
 
 ```{r}
 sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder != "None"] <- "Yes"
 sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder == "None"] <- "No"
-
-sleep_data
 ```
 
 ```{r}
-
 # Cast column and split meassurements
 sleep_data$Blood.Pressure <- as.character(sleep_data$Blood.Pressure)
 split_bp <- strsplit(sleep_data$Blood.Pressure, "/")
@@ -61,17 +59,14 @@ sleep_data$diastolic <- as.numeric(sapply(split_bp, `[`, 2))
 
 # Remove the original Blood Pressure column if desired
 sleep_data$Blood.Pressure <- NULL
-
-
 ```
 
 ```{r}
 # Write the modified DataFrame to a CSV file with custom options
 write.table(sleep_data, "data/sleep_health_proc.csv", sep = ",", col.names = TRUE, row.names = FALSE)
-
 ```
 
 ```{r}
 sleep_data <- read.csv("./data/sleep_health_proc.csv", sep = ",")
-sleep_data
+head(sleep_data, n=5)
 ```
