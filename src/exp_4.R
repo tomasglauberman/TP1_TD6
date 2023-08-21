@@ -89,27 +89,29 @@ run_experiment <- function(datasets_to_pred, filepath) {
 #'
 plot_exp_results <- function(filename_exp_results, filename_plot, width, height) {
   # Load experiment results
-  exp_results <- read.table(filename_exp_results, header=TRUE, sep="\t")
+  data = read.table(filename_exp_results, header=TRUE)
   
-  # Calculate mean AUC values for different groups of experimental results
-  data_for_plot <- exp_results %>%
+  AUC_mean <- data %>%
     group_by(dataset_name, PROP_SWITCH_Y, maxdepth) %>%
     summarize(mean_auc=mean(auc), .groups='drop')
   
-  # Create a ggplot object for the line plot
-  g <- ggplot(data_for_plot, aes(x=maxdepth, y=mean_auc, color=IMPUTED)) +
+  max_AUC <- AUC_mean %>%
+    group_by(dataset_name, PROP_SWITCH_Y) %>%
+    summarize(max_auc=max(mean_auc), .groups='drop')
+  
+  g <- ggplot(max_AUC, aes(x = PROP_SWITCH_Y, y = max_auc, color = dataset_name)) +
     geom_line() +
     theme_bw() +
-    xlab("Maximum tree depth") +
-    ylab("AUC (estimated through repeated validation)") +
-    facet_grid(dataset_name ~ PROP_SWITCH_Y, scales="free_y") +
+    labs(x = "Switch proportion", y = "Max AUC", color = "Dataset") +
     theme(legend.position="bottom",
           panel.grid.major=element_blank(),
           strip.background=element_blank(),
           panel.border=element_rect(colour="black", fill=NA))
   
   # Save the plot to a file
-  ggsave(filename_plot, g, width=width, height=height)
+  ggsave(filename_plot, g, width=5, height=4)
+  
+  print(g)
 }
 
 # Load the datasets
