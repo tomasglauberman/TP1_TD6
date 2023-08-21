@@ -7,7 +7,7 @@ library(gridExtra)
 PARALLELIZE <- TRUE # Set the option for parallelization of computations
 N_THREADS <- 30     # Define the number of threads for parallel processing
 N_BINS <- 10        # Define the number of bins for discretization
-RERUN_EXP <- TRUE   # Set the option to rerun the experiment
+RERUN_EXP <- FALSE   # Set the option to rerun the experiment
 
 # Load provided functions
 set.seed(589115021)
@@ -24,7 +24,6 @@ source("provided_functions_exp_propio.R")
 #' of missing data. For each combination, it configures the preprocessing options, performs
 #' the experiment, and stores the results in a list. The list of results is then combined into
 #' a single data frame, which is saved to the specified file.
-
 run_experiment <- function(datasets_to_pred, filepath) {
   
   exp_results <- list()  # Store experiment results
@@ -33,14 +32,15 @@ run_experiment <- function(datasets_to_pred, filepath) {
   # Iterate through different dataset, imputation, and proportion of missing values combinations
   for (dtp in datasets_to_pred) {
     for (subsamplear in c("Yes", "No")) {
-      for (propNA in c(0, 0.7)) {
-        print(c(dtp$dataset_name, subsamplear))
+      for (propNA in c(0)) {
+        print(c(dtp$dataset_name, subsamplear, propNA))
         
         # Configure preprocessing options based on imputation choice
+        data_balanceada = sub_sample(dtp$data_df, dtp$var_to_predict)[[1]]
+        data_desbalanceada = sub_sample(dtp$data_df, dtp$var_to_predict)[[2]]
+        
         if (subsamplear == "Yes") {
-          data_nueva <- sub_sample(dtp$data_df, dtp$var_to_predict)
-          dtp$data_df = data_nueva
-          
+          dtp$data_df = data_balanceada
           preprocess_control <- list(
             prop_NAs= propNA,
             impute_NAs=FALSE,
@@ -52,6 +52,7 @@ run_experiment <- function(datasets_to_pred, filepath) {
             prop_switch_y=0
           )
         } else if (subsamplear == "No") {
+          dtp$data_df = data_desbalanceada
           preprocess_control <- list(
             prop_NAs= propNA,
             impute_NAs=FALSE,
@@ -127,7 +128,7 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
           panel.grid.major=element_blank(),
           strip.background=element_blank(),
           panel.border=element_rect(colour="black", fill=NA))
-  
+  ggsave(filename_plot, g, width=5, height=4)
   print(g)
   return(g)
 }
@@ -141,9 +142,9 @@ datasets_to_pred <- list(
 
 # Run the experiment
 if (RERUN_EXP ==  TRUE) {
-  run_experiment(datasets_to_pred, "./outputs/tables/exp_propio.txt")
+  run_experiment(datasets_to_pred, "./outputs/tables/exp_propio_2.txt")
 }
 
 # Plot the experiment results
-plot_exp_results( "./outputs/tables/exp_propio.txt", "./outputs/plots/exp_propio.jpg", width=6, height=4)
+plot_exp_results( "./outputs/tables/exp_propio_2.txt", "./outputs/plots/exp_propio_2.jpg", width=6, height=4)
 

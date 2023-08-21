@@ -120,6 +120,7 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
           panel.grid.major=element_blank(),
           strip.background=element_blank(),
           panel.border=element_rect(colour="black", fill=NA))
+  ggsave(filename_plot, g, width=5, height=4)
 
   print(g)
 }

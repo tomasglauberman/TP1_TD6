@@ -88,7 +88,7 @@ preprocess_data <- function(var_to_predict, train_df, val_df,
   X_val <- val_df[, setdiff(colnames(train_df), var_to_predict)]
   y_val <- val_df[, c("obs_id_value", var_to_predict)]
   rm(train_df, val_df)
-
+  
   # Generating missing values in the data if specified
   if (prop_NAs > 0) {
     for (v in setdiff(colnames(X_train), "obs_id_value")) {
@@ -389,9 +389,18 @@ sub_sample <- function(data, clase) {
   #te da el tamaño de la clase con menor cantidad de observaciones (n)
   tamaño_muestra <- min(table(data[,clase]))
   
-  
+  datos_copy = data
   # Submuestreo de la clase mayoritaria (agarro n observaciones)
-  submuestra_mayoritaria <- data %>%
+  submuestra_balanceada <- datos_copy %>%
     group_by_at(clase) %>%
     sample_n(tamaño_muestra)
+  
+  submuestra_desbalanceada <-datos_copy %>%
+    sample_n(tamaño_muestra)
+  
+  #Me devuelve 2 submuestras con la misma cant de observaciones
+  return(list(submuestra_balanceada, submuestra_desbalanceada))
 }
+
+
+

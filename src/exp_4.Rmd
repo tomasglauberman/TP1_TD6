@@ -17,6 +17,6 @@ Así, se entrena un modelo para cada profundidad y con diferentes valores para l
 
 En los 3 datasets se obtiene resultados similares que indican que la performance de los modelos seleccionados disminuye a medida que se agrega ruido a la variable a predecir. La peor performance se alcanza con ruido máximo en `PROP_SWITCH_Y=0.5` (ya que en 1 la performance es igual solo que invierte los labels).
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 source("exp_4.R")
 ```
