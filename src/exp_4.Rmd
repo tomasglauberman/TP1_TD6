@@ -4,17 +4,17 @@ author: "Massri"
 date: "2023-08-17"
 output: html_document
 ---
+
 ```{r}
 library(dplyr)
 library(ggplot2)
 ```
 
-Se pide que, en este caso, no reporten valores de AUC para las 30 profundidades diferentes sino que reporten, para esas 30 profundidades probadas, cuál fue el mayor AUC obtenido.
-
 ```{r}
 data = read.table("./outputs/tables/exp_4.txt", header=TRUE)
 data
 ```
+
 ```{r}
 AUC_prom <- data %>%
     group_by(dataset_name, PROP_SWITCH_Y, maxdepth) %>%
@@ -26,6 +26,7 @@ max_AUC <- AUC_prom %>%
   
 max_AUC
 ```
+
 ```{r}
  g <- ggplot(max_AUC, aes(x = PROP_SWITCH_Y, y = max_auc, color = dataset_name)) +
   geom_line() +
@@ -41,4 +42,3 @@ max_AUC
   
 print(g)
 ```
-

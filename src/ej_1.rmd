@@ -51,7 +51,7 @@ sleep_data
 
 ```{r}
 
-# Assuming your DataFrame is named my_dataframe and the blood pressure column is named "Blood Pressure"
+# Cast column and split meassurements
 sleep_data$Blood.Pressure <- as.character(sleep_data$Blood.Pressure)
 split_bp <- strsplit(sleep_data$Blood.Pressure, "/")
 

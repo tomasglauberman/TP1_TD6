@@ -4,11 +4,11 @@ author: "Massri"
 date: "2023-08-17"
 output: html_document
 ---
+
 ```{r}
 library(dplyr)
 source("provided_functions.R")
 ```
-
 
 ```{r}
 data_sleep = read.table("./data/sleep_health_proc.csv", header=TRUE, sep=",")
@@ -35,6 +35,7 @@ heart
 
 
 ```
+
 ```{r}
   tamaño_muestra <- min(table(data_heart$HeartDisease))
 tamaño_muestra
@@ -70,9 +71,16 @@ sub_sample <- function(data, clase){
 }
 
 
-for(i in datasets_to_pred){
-  print(sub_sample(i$data_df, i$var_to_predict))
+proc <- function(df) {
+  print(df$data_df)
 }
 
-```
+for(i in datasets_to_pred){
+  data_nueva = sub_sample(i$data_df, i$var_to_predict)
+  i$data_df = data_nueva
+  proc(i)
+}
 
+
+
+```

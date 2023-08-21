@@ -13,19 +13,6 @@ RERUN_EXP <- FALSE   # Set the option to rerun the experiment
 set.seed(589115021)
 source("provided_functions.R")
 
-sub_sample <- function(data, clase){
-  #te da el tamaño de la clase con menor cantidad de observaciones (n)
-  tamaño_muestra <- min(table(data[,clase]))
-  
-  
-  # Submuestreo de la clase mayoritaria (agarro n observaciones)
-  submuestra_mayoritaria <- data %>%
-    group_by_at(clase) %>%
-    sample_n(tamaño_muestra)
-}
-
-
-
 #' Run an experiment to evaluate the performance of a predictive model under different conditions.
 #'
 #' @param datasets_to_pred A list of data frames, each containing a dataset to be predicted.

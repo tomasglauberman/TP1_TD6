@@ -30,23 +30,21 @@ run_experiment <- function(datasets_to_pred, filepath) {
   
   # Iterate through different dataset, imputation, and proportion of missing values combinations
   for (dtp in datasets_to_pred) {
-    for (impute in c("No")) {
       for (PROP_SWITCH_Y in seq(0, 0.5, 0.025)) {
-        print(c(dtp$dataset_name, impute, PROP_SWITCH_Y))
+        print(c(dtp$dataset_name, PROP_SWITCH_Y))
         
         # Configure preprocessing options based on imputation choice
-        if (impute == "No") {
-          preprocess_control <- list(
-            prop_NAs=0,
-            impute_NAs=FALSE,
-            treat_NAs_as_new_levels=FALSE,
-            do_ohe=FALSE,
-            discretize=FALSE,
-            n_bins=N_BINS,
-            ord_to_numeric=FALSE,
-            prop_switch_y= PROP_SWITCH_Y
-          )
-        }
+        preprocess_control <- list(
+          prop_NAs=0,
+          impute_NAs=FALSE,
+          treat_NAs_as_new_levels=FALSE,
+          do_ohe=FALSE,
+          discretize=FALSE,
+          n_bins=N_BINS,
+          ord_to_numeric=FALSE,
+          prop_switch_y= PROP_SWITCH_Y
+        )
+        
         
         # Perform the experiment for the current settings
         if (PARALLELIZE == TRUE) {
@@ -59,13 +57,13 @@ run_experiment <- function(datasets_to_pred, filepath) {
                                                   val_reps=30)
         }
         
-        res_tmp$IMPUTED <- impute
+        res_tmp$IMPUTED <- "No"
         res_tmp$PROP_SWITCH_Y <- PROP_SWITCH_Y
         exp_results[[i]] <- res_tmp
         rm(res_tmp)  # Clean up temporary result
         i <- i + 1  # Increment result counter
       }
-    }
+    
   }
   
   # Combine experiment results into a single data frame
