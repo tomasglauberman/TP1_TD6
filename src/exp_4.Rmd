@@ -1,5 +1,6 @@
 ---
 title: "Experimento 4"
+author: "Tomas Glauberman, Natalia Massri y Juan Silvestri"
 output: pdf_document
 ---
 
@@ -15,7 +16,7 @@ Las variables independientes del experimento son:
 
 Así, se entrena un modelo para cada profundidad y con diferentes valores para la proporción de switch. Para un rango de valores de `PROP_SWITCH_Y` y cada dataset, se obtiene la estimación de AUC del modelo, y se guarda sólo el modelo con mejor performance de todas las profundidades.
 
-En los 3 datasets se obtiene resultados similares que indican que la performance de los modelos seleccionados disminuye a medida que se agrega ruido a la variable a predecir. La peor performance se alcanza con ruido máximo en `PROP_SWITCH_Y=0.5` (ya que al aumentar mejora, en 1 la performance es igual que en 0 solo que invierte los labels).
+En los 3 datasets se obtiene resultados similares que indican que la performance de los modelos seleccionados disminuye a medida que se agrega ruido a la variable a predecir. La peor performance se alcanza con ruido máximo en `PROP_SWITCH_Y=0.5` (ya que al aumentar el`PROP_SWITCH_Y` mejora, pues para AUC menores a 0.5 se invierten los labels pues el modelo está prediciendo al reves).
 
 ```{r message=FALSE, warning=FALSE}
 source("exp_4.R")

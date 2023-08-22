@@ -1,5 +1,6 @@
 ---
 title: "Experimento 1"
+author: "Tomas Glauberman, Natalia Massri y Juan Silvestri"
 output: pdf_document
 ---
 
@@ -17,7 +18,7 @@ Las variables independientes del experimento son:
 
 En la siguiente figura se puede observar un resumen de los resultados.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 source("exp_1.R")
 ```
 
@@ -26,7 +27,8 @@ Se observa que a medida que aumenta la proporción de NAs la performance de los 
 Por otro lado, en los datasets de Churn y Sleep Dissorder la performance sin imputar los datos faltantes es mejor que al imputar con la media. Creemos que esto se debe al eficiente manejo de los datos faltantes por parte de los árboles con el método de surrogate variables frente a los simples imputs que hicimos con la media y moda. En el dataset de Heart Disease, la performance imputando y sin imputar es similar. Creemos que esto ocurre ya que, como podemos ver a continuación, la distribución de las variables se centra en la media, por lo tanto, al tomar observaciones al azar para reemplazar con NAs e imputarlas con la media o moda (dependiendo de si es númerica o categórica), es problable que ese valor esté cerca del real por lo que no se ve una gran diferencia.
 
 ```{r}
-heart = read.table("./data/heart.csv", header = TRUE, sep=",", na.strings="", stringsAsFactors=TRUE)
+heart = read.table("./data/heart.csv", header = TRUE, sep=",", na.strings="", 
+                   stringsAsFactors=TRUE)
 
 par(mfrow = c(3, 4))
 for (col in names(heart)) {

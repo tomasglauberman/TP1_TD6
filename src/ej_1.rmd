@@ -1,5 +1,6 @@
 ---
-title: "Dataset"
+title: "Ejercicio 1"
+author: "Tomas Glauberman, Natalia Massri y Juan Silvestri"
 output: pdf_document
 ---
 
