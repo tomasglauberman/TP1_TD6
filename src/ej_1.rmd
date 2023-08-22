@@ -37,18 +37,18 @@ El objetivo es construir un modelo para predecir si una persona posee algún sle
 
 Se debe transformar la columna de Blood pressure que viene dada en el formato 120/80 a 2 columnas diferentes una para cada valor. Por otro lado, se debe transformar la columna Sleep disorder en etiquetas binarias: posee o no algún sleep disorder.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 sleep_data <- read.csv("data/sleep_health.csv")
 ```
 
 Transformamos también la variable a predecir, dado que el original viene con los valores None o el nombre del disorder.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder != "None"] <- "Yes"
 sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder == "None"] <- "No"
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Cast column and split meassurements
 sleep_data$Blood.Pressure <- as.character(sleep_data$Blood.Pressure)
 split_bp <- strsplit(sleep_data$Blood.Pressure, "/")
@@ -61,12 +61,12 @@ sleep_data$diastolic <- as.numeric(sapply(split_bp, `[`, 2))
 sleep_data$Blood.Pressure <- NULL
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Write the modified DataFrame to a CSV file with custom options
 write.table(sleep_data, "data/sleep_health_proc.csv", sep = ",", col.names = TRUE, row.names = FALSE)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 sleep_data <- read.csv("./data/sleep_health_proc.csv", sep = ",")
 head(sleep_data, n=5)
 ```

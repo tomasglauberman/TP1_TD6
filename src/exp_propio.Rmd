@@ -4,7 +4,7 @@ author: "Massri"
 date: "2023-08-21"
 output: pdf_document
 ---
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 ```
 
@@ -14,7 +14,7 @@ Nustra hipotesis era que el modelo deberia predecir mejor en datasets balanceado
 
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 data_heart = read.table("./data/heart.csv",header=TRUE, sep = ",")
 
 data_churn = read.table("./data/customer_churn.csv", header=TRUE,sep = ",")
@@ -25,7 +25,7 @@ data_sleep = read.table("./data/sleep_health_proc.csv",header=TRUE, sep = ",")
 ```
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 par(mfrow=c(1, 3))
 barplot(prop.table(table(data_churn$churn)), main = "Churn" , col = blues9, ylim = (c(0,1)))
 barplot(prop.table(table(data_heart$HeartDisease)), main = "Heart Disease", col = blues9, ylim = (c(0,1)))
@@ -46,7 +46,7 @@ Esperabamos que esto ocurra tanto para Heart como para Sleep pero no para Churn.
 Notamos que los modelos que subsamplean tienen menor cantidad de observaciones y que mantienen la performance.
 Por lo tanto, vamos a recrear el experiemento en donde los no subsampleados pasen a hacer un subsampleo random para poder comparar 2 modelos entrenados con la misma cantidad de datos.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 source("exp_propio.R")
 ```
 
