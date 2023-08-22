@@ -3,6 +3,10 @@ title: "Dataset"
 output: pdf_document
 ---
 
+# Ejercicio 1
+
+### Selección de un conjunto de datos adicional
+
 El dataset seleccionado para realizar los experimentos contiene datos relevantes para el estudio del sueño. Los datos se obtuvieron a través de Kaggle, en el siguiente [link](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset). El dataset consiste de 374 observaciones con 13 variables:
 
 -   Numéricas:
@@ -33,13 +37,11 @@ El dataset seleccionado para realizar los experimentos contiene datos relevantes
 
 El objetivo es construir un modelo para predecir si una persona posee algún sleep disorder en base a variables de salud, ocupación, duración y calidad de sueño, etc.
 
-Se debe transformar la columna de "Blood pressure" que viene dada en el formato yyy/xx a 2 columnas diferentes una para cada valor: yyy, xx. Por otro lado, se debe transformar la columna "Sleep disorder" en etiquetas binarias: posee o no algún sleep disorder.
+Se debe transformar la columna de "Blood pressure" que viene dada en el formato yyy/xx a 2 columnas diferentes una para cada valor: yyy, xx. Por otro lado, también modificamos la variable a predecir, "Sleep Disorder", dado que la original viene con los valores None o el nombre del disorder, y la tranformamos en etiquetas binarias: posee o no algún sleep disorder.
 
 ```{r message=FALSE, warning=FALSE}
 sleep_data <- read.csv("data/sleep_health.csv")
 ```
-
-Transformamos también la variable a predecir, dado que el original viene con los valores None o el nombre del disorder.
 
 ```{r message=FALSE, warning=FALSE}
 sleep_data$Sleep.Disorder[sleep_data$Sleep.Disorder != "None"] <- "Yes"

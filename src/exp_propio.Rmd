@@ -3,12 +3,16 @@ title: "Experimento propio"
 output: pdf_document
 ---
 
+# Experimento propio
+
+### Subsampling de clase mayoritaria
+
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 ```
 
-Decidimos hacer subsampling como nuestro experimento propio para estudiar si el balanceo/desbalanceo de clases en la variable a predecir tiene efecto en la performance del modelo. Para eso, eliminamos al azar algunas observaciones de la clase mayoritaria para lograr igual cantidad de observaciones en ambas clases. Luego entrenamos nuestro modelo y estimamos la performance. Se comparan los resultados de para cada dataset. Adicionalmente decidimos agregar otra variable independiente al experimento que supusimos útil: proporción de datos faltantes.\
-Nustra hipótesis inicial era que el modelo debería predecir mejor en datasets balanceados que en los que no lo están ya que podría haber un sesgo de predecir en mayor proporción a clase mayoritaria. En datasets con datos faltantes, este fenómeno se debería pronunciar más ya que las posibildades de poca representación son mayores.
+Decidimos hacer subsampling como nuestro experimento propio para estudiar si el balanceo/desbalanceo de clases en la variable a predecir tiene efecto en la performance del modelo. Para eso, eliminamos al azar algunas observaciones de la clase mayoritaria para lograr igual cantidad de observaciones en ambas clases. Luego entrenamos nuestro modelo y estimamos la performance. Se comparan los resultados de cada dataset. Adicionalmente decidimos agregar otra variable independiente al experimento que supusimos útil: proporción de datos faltantes.\
+Nuestra hipótesis inicial era que el modelo debería predecir mejor en datasets balanceados que en los que no lo están ya que podría haber un sesgo de predecir en mayor proporción a clase mayoritaria. En datasets con datos faltantes, este fenómeno se debería pronunciar más ya que las posibilidades de poca representación son mayores.
 
 ```{r message=FALSE, warning=FALSE}
 data_heart = read.table("./data/heart.csv",header=TRUE, sep = ",")
@@ -26,18 +30,20 @@ barplot(prop.table(table(data_sleep$Sleep.Disorder)), main = "Sleep Disorder", c
 par(mfrow=c(1, 1))
 ```
 
-Tanto el dataset de Sleep Disorder como el de Heart Disease están realtivamente balanceados, diferente de el dataset de Churn que la clase *non-churn* es mayoritaria. Creemos que balancear en los 2 datasets más balanceados no tendrá mucho efecto, pero que la perfomance sobre Churn mejorará.
+Tanto el dataset de Sleep Dissorder como el de Heart Disease están realtivamente balanceados, a diferencia del dataset de Churn que la clase *non-churn* es mayoritaria. Creemos que balancear en los 2 datasets más balanceados no tendrá mucho efecto, pero que la perfomance sobre Churn mejorará.
 
-![Graficos](./outputs/plots/exp_propio.jpg)
+![**Graficos**](./outputs/plots/exp_propio.jpg)
 
-Luego de hacer el experimento, notamos que no hay tal mejoras en la performance en ninguno de los 3 datasets incluso con datos faltantes. Esperábamos que esto ocurra tanto para Heart como para Sleep pero no para Churn. Pensamos que puede ocurrir que cada clase está lo suficimientemente representada o la distinción entre ambas clases es simple de captar para el modelo.[^1]
+Luego de hacer el experimento, notamos que no hay tales mejoras en la performance en ninguno de los 3 datasets incluso con datos faltantes. Esperábamos que esto ocurra tanto para Heart como para Sleep, ya que las clases estaban caqsi balanceadas, pero no para Churn. Pensamos que puede ocurrir que cada clase está lo suficimientemente representada o la distinción entre ambas clases es simple de captar para el modelo.[^1]
 
 [^1]: El experimento que se encuentra en exp_propio.R no corresponde exactamente al reportado aquí, sino que fue modificado para obtener los resultados posteriores.
 
-Notamos que los modelos que subsamplean tienen menor cantidad de observaciones al entrenarse y que mantienen la performance. Por lo tanto, vamos a recrear el experiemento en donde los no subsampleados pasen a hacer un subsampleo random para poder comparar 2 modelos entrenados con la misma cantidad de datos.
+Notamos que los modelos que subsamplean tienen menor cantidad de observaciones al entrenarse y que mantienen la performance. Por lo tanto, vamos a recrear el experiemento en donde los no subsampleados pasen a hacer un subsampleo random (de los datos datos reales, agarro 2n observaciones al azar, donde n es la cantidad de datos en la clase minoritaria) para poder comparar 2 modelos entrenados con la misma cantidad de datos.
 
 ```{r message=FALSE, warning=FALSE}
 source("exp_propio.R")
 ```
 
 Luego de hacer el experimento con ambos modelos entrenados con la misma cantidad de observaciones, no notamos ninguna mejora en la performance del mismo. Es de interés observar que con menor cantidad de datos de entrenamiento se obtiene una performance similar.
+
+***Aclaración:*** en la implementanción, realizamos el subsampling previo a dividir las observaciones en entrenamiento y validación. Si bien esto no genera data leakage (a diferencia de oversamplear antes de dividir los datos), se podría dividir las observaciones y luego sólo subsamplear el set de entrenamiento, para tener un set de validación más grande y representativo.

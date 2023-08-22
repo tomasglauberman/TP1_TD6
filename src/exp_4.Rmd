@@ -3,7 +3,9 @@ title: "Experimento 4"
 output: pdf_document
 ---
 
-Se realizó un experimento en el que se analiza el impacto que tiene el riudo en la variable a predecir en 3 datasets distintos con un modelo de Árbol de decisión. Para ello, se entrenaron múltiples modelos para cada uno de los datasets, lo que permite estimar y evaluar la performance de ellos.
+# Experimento 4
+
+Se realizó un experimento en el que se analiza el impacto que tiene el ruido en la variable a predecir en 3 datasets distintos con un modelo de Árbol de decisión. Para ello, se entrenaron múltiples modelos para cada uno de los datasets, lo que permite estimar y evaluar la performance de ellos.
 
 Las variables independientes del experimento son:
 
