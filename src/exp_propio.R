@@ -29,16 +29,17 @@ run_experiment <- function(datasets_to_pred, filepath) {
   exp_results <- list()  # Store experiment results
   i <- 1  # Initialize counter for experiment results
   
-  # Iterate through different dataset, imputation, and proportion of missing values combinations
+  # Iterate through different dataset, subsample, and proportion of missing values combinations
   for (dtp in datasets_to_pred) {
     for (subsamplear in c("Yes", "No")) {
       for (propNA in c(0)) {
         print(c(dtp$dataset_name, subsamplear, propNA))
         
-        # Configure preprocessing options based on imputation choice
+        # Subsample dataset to get balanced and unbalanced classes
         data_balanceada = sub_sample(dtp$data_df, dtp$var_to_predict)[[1]]
         data_desbalanceada = sub_sample(dtp$data_df, dtp$var_to_predict)[[2]]
         
+        # Configure preprocessing options based on imputation choice
         if (subsamplear == "Yes") {
           dtp$data_df = data_balanceada
           preprocess_control <- list(
@@ -109,7 +110,7 @@ run_experiment <- function(datasets_to_pred, filepath) {
 plot_exp_results <- function(filename_exp_results, filename_plot, width, height) {
   # Load experiment results
   exp_results <- read.table(filename_exp_results, header=TRUE, sep="\t")
-  
+
   exp_results$SUBSAMPLED = as.factor(exp_results$SUBSAMPLED)
   
   # Calculate mean AUC values for different groups of experimental results

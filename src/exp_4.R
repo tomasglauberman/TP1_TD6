@@ -28,7 +28,7 @@ run_experiment <- function(datasets_to_pred, filepath) {
   exp_results <- list()  # Store experiment results
   i <- 1  # Initialize counter for experiment results
   
-  # Iterate through different dataset, imputation, and proportion of missing values combinations
+  # Iterate through different dataset and proportion values to switch
   for (dtp in datasets_to_pred) {
       for (PROP_SWITCH_Y in seq(0, 0.5, 0.025)) {
         print(c(dtp$dataset_name, PROP_SWITCH_Y))
@@ -91,10 +91,12 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
   # Load experiment results
   data = read.table(filename_exp_results, header=TRUE)
   
+  # Estimate AUC for each model
   AUC_mean <- data %>%
     group_by(dataset_name, PROP_SWITCH_Y, maxdepth) %>%
     summarize(mean_auc=mean(auc), .groups='drop')
   
+  # Get the best model for PROP_SWITCH
   max_AUC <- AUC_mean %>%
     group_by(dataset_name, PROP_SWITCH_Y) %>%
     summarize(max_auc=max(mean_auc), .groups='drop')
@@ -102,7 +104,8 @@ plot_exp_results <- function(filename_exp_results, filename_plot, width, height)
   g <- ggplot(max_AUC, aes(x = PROP_SWITCH_Y, y = max_auc, color = dataset_name)) +
     geom_line() +
     theme_bw() +
-    labs(x = "Switch proportion", y = "Max AUC", color = "Dataset") +
+    labs(x = "Switch proportion (noise)", y = "Max AUC", color = "Dataset") +
+    ggtitle("Model performance with increasing noise") +
     theme(legend.position="bottom",
           panel.grid.major=element_blank(),
           strip.background=element_blank(),

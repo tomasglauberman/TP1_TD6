@@ -1,11 +1,9 @@
 ---
 title: "Dataset"
-author: "Juan Silvestri"
-date: "`r Sys.Date()`"
 output: pdf_document
 ---
 
-Los datos se obtuvieron a través de Kaggle, en el siguiente [link](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset). El dataset consiste de 374 observaciones con 13 variables:
+El dataset seleccionado para realizar los experimentos contiene datos relevantes para el estudio del sueño. Los datos se obtuvieron a través de Kaggle, en el siguiente [link](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset). El dataset consiste de 374 observaciones con 13 variables:
 
 -   Numéricas:
 
@@ -33,9 +31,9 @@ Los datos se obtuvieron a través de Kaggle, en el siguiente [link](https://www.
 
     -   Sleep disorder
 
-El objetivo es construir un modelo para predecir si una persona posee algún sleep disorder o no en base a variables de salud, ocupación, duración y calidad de sueño, etc.
+El objetivo es construir un modelo para predecir si una persona posee algún sleep disorder en base a variables de salud, ocupación, duración y calidad de sueño, etc.
 
-Se debe transformar la columna de Blood pressure que viene dada en el formato 120/80 a 2 columnas diferentes una para cada valor. Por otro lado, se debe transformar la columna Sleep disorder en etiquetas binarias: posee o no algún sleep disorder.
+Se debe transformar la columna de "Blood pressure" que viene dada en el formato yyy/xx a 2 columnas diferentes una para cada valor: yyy, xx. Por otro lado, se debe transformar la columna "Sleep disorder" en etiquetas binarias: posee o no algún sleep disorder.
 
 ```{r message=FALSE, warning=FALSE}
 sleep_data <- read.csv("data/sleep_health.csv")

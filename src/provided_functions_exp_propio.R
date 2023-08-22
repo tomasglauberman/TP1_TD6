@@ -385,8 +385,11 @@ est_auc_across_depths_no_par <- function(data_to_pred, preprocess_control, max_m
 }
 
 
+
+#' Subsamplea un dataset de manera tal que el nuevo subsampleo tenga la misma cantidad
+#' de observaciones para el label @clase
 sub_sample <- function(data, clase) {
-  #te da el tamaño de la clase con menor cantidad de observaciones (n)
+  # Obtener el tamaño de la clase con menor cantidad de observaciones (n)
   tamaño_muestra <- min(table(data[,clase]))
   
   datos_copy = data
@@ -398,7 +401,7 @@ sub_sample <- function(data, clase) {
   submuestra_desbalanceada <-datos_copy %>%
     sample_n(tamaño_muestra)
   
-  #Me devuelve 2 submuestras con la misma cant de observaciones
+  # Me devuelve 2 submuestras con la misma cant de observaciones
   return(list(submuestra_balanceada, submuestra_desbalanceada))
 }
 
